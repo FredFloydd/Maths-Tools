@@ -29,6 +29,23 @@ def add(A,B):
 		print('Matrices are not compatible')
 		print()
 
+def multiply(A,B):
+	if len(A[0]) == len(B):
+		name = input('Name the new matrix: ')
+		new = {}
+		for row in range(len(A)):
+			new[row] = []
+			for column in range(len(B[0])):
+				new[row].append(0)
+		for iteration in range(len(A[0])):
+			for x in range(len(new)):
+				for y in range(len(new[0])):
+					new[x][y] += A[x][iteration] * B[iteration][y]
+		library[name] = new
+		print(name + ' =')
+		print_matrix(new)
+	else:
+		print('Matrices are not compatible')
 
 def create_matrix(name):
   matrix_name = str(name)
@@ -50,7 +67,7 @@ def start():
 	start = True
 	while start == True:
 		print('What would you like to do?')
-		print('C to create, A to add, P to print, E to exit')
+		print('C to create, A to add, P to print, M to Multiply, E to exit')
 		choice = input('Choice: ')
 		if choice.upper() == 'C':
 			name = input('Name your matrix: ')
@@ -74,10 +91,9 @@ def start():
 			mat1 = library[input('First Matrix: ')]
 			mat2 = library[input('Second Matrix: ')]
 			add(mat1, mat2)
-
-
-			
-
-
+		if choice.upper() == 'M':
+			mat1 = library[input('First Matrix: ')]
+			mat2 = library[input('Second Matrix: ')]
+			multiply(mat1, mat2)
 
 start()
