@@ -8,7 +8,26 @@ def print_matrix(matrix):
 		for n in range(len(printable)):
 			if len(printable[n]) == 1:
 				printable[n] = ' ' + printable[n]
-		print('  '.join(printable))
+		print(' '.join(printable))
+	print()
+
+def add(A,B):
+	if len(A) == len(B) and len(A[0]) == len(B[0]):
+		name = input('Name the new matrix: ')
+		new = {}
+		for x in range(len(A.keys())):
+			line = []
+			for y in range(len(A[x])):
+				line.append(int(A[x][y] + B[x][y]))
+			new[x] = line
+		print()
+		print(name + ' =')
+		print_matrix(new)
+		library[name] = new
+	else:
+		print()
+		print('Matrices are not compatible')
+		print()
 
 
 def create_matrix(name):
@@ -21,6 +40,7 @@ def create_matrix(name):
     for x in range(col):
       line.append(int(input('Value: ')))
     name[n] = line
+  print()
   print(matrix_name + ' =')
   print_matrix(name)
   library[matrix_name] = name
@@ -50,7 +70,10 @@ def start():
 				print()
 				print(name + ' =')
 				print_matrix(library[name])
-				print()
+		if choice.upper() == 'A':
+			mat1 = library[input('First Matrix: ')]
+			mat2 = library[input('Second Matrix: ')]
+			add(mat1, mat2)
 
 
 			
