@@ -1,3 +1,5 @@
+import random
+
 library = {}
 
 def print_matrix(matrix):
@@ -62,12 +64,34 @@ def create_matrix(name):
   print_matrix(name)
   library[matrix_name] = name
 
+def det(mat):
+	if len(mat) != len(mat[0]):
+		print('Matrix not square')
+	else:
+		if len(mat) == 2:
+			return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]
+		else:
+			first = mat[0]
+			for x in range(len(mat[0])):
+				minor = {}
+				for y in range(1, len(mat)):
+					minor[y-1] = []
+					for z in range(len(mat[0])):
+						if z != x:
+							minor[y-1].append(mat[y][z])
+				first[x] *= int(det(minor))
+			determinant = 0
+			for n in range(len(first)):
+				determinant += ((-1) ** n) * int(first[n])
+			return determinant
+
+
 def start():
 	print('Welcome to the linear algebra toolbox')
 	start = True
 	while start == True:
 		print('What would you like to do?')
-		print('C to create, A to add, P to print, M to Multiply, E to exit')
+		print('C to create, A to add, P to print, M to Multiply, D for Determinant, R for Random Matrix, E to exit')
 		choice = input('Choice: ')
 		if choice.upper() == 'C':
 			name = input('Name your matrix: ')
@@ -95,5 +119,29 @@ def start():
 			mat1 = library[input('First Matrix: ')]
 			mat2 = library[input('Second Matrix: ')]
 			multiply(mat1, mat2)
+		if choice.upper() == 'D':
+			name = input('Matrix: ')
+			mat = library[name]
+			print()
+			print('Det ' + name + '= ' + str(det(mat)))
+			print()
+		if choice.upper() == 'R':
+			mat = {}
+			arr = []
+			name = input('Name of Matrix: ')
+			rows = int(input('Rows: '))
+			col = int(input('Columns: '))
+			random.seed(2)
+			for i in range(rows*col):
+				arr.append(random.randint(1,10))
+			for n in range(rows):
+				mat[n] = arr[col*n:(col*n+col)]
+			print()
+			print(name + ' =')
+			print_matrix(mat)
+			print()
+			library[name] = mat
+
+
 
 start()
