@@ -4,14 +4,17 @@ import time
 library = {}
 
 def print_matrix(matrix):
-	for x in matrix:
-		printable = []
-		for n in range(len(matrix[x])):
-			printable.append(str(matrix[x][n]))
-		for n in range(len(printable)):
-			if len(printable[n]) == 1:
-				printable[n] = ' ' + printable[n]
-		print('  '.join(printable))
+	if len(matrix) <= 20 and len(matrix[0]) <= 20:
+		for x in matrix:
+			printable = []
+			for n in range(len(matrix[x])):
+				printable.append(str(matrix[x][n]))
+			for n in range(len(printable)):
+				if len(printable[n]) == 1:
+					printable[n] = ' ' + printable[n]
+			print('  '.join(printable))
+	else:
+		print('Too big to print')
 	print()
 
 def add(A,B):
@@ -53,8 +56,8 @@ def multiply(A,B):
 def create_matrix(name):
   matrix_name = str(name)
   name = {}
-  rows = float(input('How many rows: '))
-  col = float(input('How many columns: '))
+  rows = int(input('How many rows: '))
+  col = int(input('How many columns: '))
   for n in range(rows):
     line = []
     for x in range(col):
@@ -89,10 +92,13 @@ def det(mat):
 def fastdet(mat):
 	det = 1
 	for n in range(len(mat)-1):
-		for row in range(n, len(mat) - 1):
-			factor = mat[row + 1][n] / mat[n][n]
-			for x in range(n, len(mat)):
-				mat[row+1][x] -= factor * mat[n][x]
+		if mat[n][n] == 0:
+			det = 0
+		else:
+			for row in range(n, len(mat) - 1):
+				factor = mat[row + 1][n] / mat[n][n]
+				for x in range(n, len(mat)):
+					mat[row+1][x] -= factor * mat[n][x]
 	for x in range(len(mat)):
 		det *= mat[x][x]
 	return det
@@ -155,11 +161,8 @@ def start():
 		if choice.upper() == 'X':
 			name = input('Matrix: ')
 			mat = library[name]
-			start = time.time()
 			print()
 			print('Det ' + name + ' = ' + str(fastdet(mat)))
-			end = time.time()
-			print('Time = ' + str(end - start))
 			print()
 
 
