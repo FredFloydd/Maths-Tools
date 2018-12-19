@@ -1,4 +1,5 @@
 import random
+import time
 
 library = {}
 
@@ -10,7 +11,7 @@ def print_matrix(matrix):
 		for n in range(len(printable)):
 			if len(printable[n]) == 1:
 				printable[n] = ' ' + printable[n]
-		print(' '.join(printable))
+		print('  '.join(printable))
 	print()
 
 def add(A,B):
@@ -20,7 +21,7 @@ def add(A,B):
 		for x in range(len(A.keys())):
 			line = []
 			for y in range(len(A[x])):
-				line.append(int(A[x][y] + B[x][y]))
+				line.append(float(A[x][y] + B[x][y]))
 			new[x] = line
 		print()
 		print(name + ' =')
@@ -52,12 +53,12 @@ def multiply(A,B):
 def create_matrix(name):
   matrix_name = str(name)
   name = {}
-  rows = int(input('How many rows: '))
-  col = int(input('How many columns: '))
+  rows = float(input('How many rows: '))
+  col = float(input('How many columns: '))
   for n in range(rows):
     line = []
     for x in range(col):
-      line.append(int(input('Value: ')))
+      line.append(float(input('Value: ')))
     name[n] = line
   print()
   print(matrix_name + ' =')
@@ -79,19 +80,29 @@ def det(mat):
 					for z in range(len(mat[0])):
 						if z != x:
 							minor[y-1].append(mat[y][z])
-				first[x] *= int(det(minor))
+				first[x] *= float(det(minor))
 			determinant = 0
 			for n in range(len(first)):
-				determinant += ((-1) ** n) * int(first[n])
+				determinant += ((-1) ** n) * float(first[n])
 			return determinant
 
+def fastdet(mat):
+	det = 1
+	for n in range(len(mat)-1):
+		for row in range(n, len(mat) - 1):
+			factor = mat[row + 1][n] / mat[n][n]
+			for x in range(n, len(mat)):
+				mat[row+1][x] -= factor * mat[n][x]
+	for x in range(len(mat)):
+		det *= mat[x][x]
+	return det
 
 def start():
 	print('Welcome to the linear algebra toolbox')
 	start = True
 	while start == True:
 		print('What would you like to do?')
-		print('C to create, A to add, P to print, M to Multiply, D for Determinant, R for Random Matrix, E to exit')
+		print('C to create, A to add, P to print, M to Multiply, D for Determinant, X for FastDet, R for Random Matrix, E to exit')
 		choice = input('Choice: ')
 		if choice.upper() == 'C':
 			name = input('Name your matrix: ')
@@ -123,7 +134,7 @@ def start():
 			name = input('Matrix: ')
 			mat = library[name]
 			print()
-			print('Det ' + name + '= ' + str(det(mat)))
+			print('Det ' + name + ' = ' + str(det(mat)))
 			print()
 		if choice.upper() == 'R':
 			mat = {}
@@ -141,6 +152,16 @@ def start():
 			print_matrix(mat)
 			print()
 			library[name] = mat
+		if choice.upper() == 'X':
+			name = input('Matrix: ')
+			mat = library[name]
+			start = time.time()
+			print()
+			print('Det ' + name + ' = ' + str(fastdet(mat)))
+			end = time.time()
+			print('Time = ' + str(end - start))
+			print()
+
 
 
 
